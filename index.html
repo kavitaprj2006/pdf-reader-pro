@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universal Text & PDF Reader with Speech</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <i class="fas fa-book-reader"></i>
+        <span>PDF Reader Pro</span>
+      </div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <!-- File Upload Section -->
+    <section class="upload-section">
+      <div class="upload-card">
+        <h2><i class="fas fa-file-upload"></i> Upload PDF Document</h2>
+        <input type="file" id="fileInput" accept=".pdf" />
+        <div class="file-info" id="fileInfo"></div>
+      </div>
+    </section>
+
+    <!-- PDF Viewer and Controls -->
+    <section class="pdf-section">
+      <div class="pdf-viewer-container">
+        <div class="pdf-controls">
+          <button onclick="prevPage()" class="control-btn">
+            <i class="fas fa-chevron-left"></i> Previous
+          </button>
+          <span id="pageInfo" class="page-info">No PDF loaded</span>
+          <button onclick="nextPage()" class="control-btn">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="canvas-container">
+          <canvas id="pdfRenderer"></canvas>
+        </div>
+        <div class="pdf-actions">
+          <button onclick="extractCurrentPageText()" class="action-btn extract-btn">
+            <i class="fas fa-text-height"></i> Extract Text
+          </button>
+          <button onclick="speakOriginal()" class="action-btn speak-btn">
+            <i class="fas fa-volume-up"></i> Read Aloud
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Text Input and Translation Section -->
+    <section class="translation-section">
+      <div class="text-input-container">
+        <h3><i class="fas fa-language"></i> Text Translation</h3>
+        <textarea 
+          id="textInput" 
+          placeholder="Type text here or extract from PDF above..." 
+          rows="6"
+        ></textarea>
+        
+        <div class="translation-controls">
+          <select id="targetLang" class="lang-select">
+            <option value="hi">Hindi (हिंदी)</option>
+            <option value="fr">French (Français)</option>
+            <option value="es">Spanish (Español)</option>
+            <option value="de">German (Deutsch)</option>
+            <option value="zh-CN">Chinese (中文)</option>
+            <option value="ja">Japanese (日本語)</option>
+            <option value="ko">Korean (한국어)</option>
+            <option value="ar">Arabic (العربية)</option>
+          </select>
+          <button onclick="translateAndSpeak()" class="translate-btn">
+            <i class="fas fa-globe"></i> Translate & Speak
+          </button>
+        </div>
+      </div>
+
+      <div class="translation-result-container">
+        <h3><i class="fas fa-exchange-alt"></i> Translation Result</h3>
+        <div id="translationResult" class="translation-result"></div>
+        <div class="result-actions">
+          <button id="speakTranslationBtn" style="display:none;" class="action-btn speak-btn">
+            <i class="fas fa-volume-up"></i> Speak Translation
+          </button>
+          <button id="copyTranslationBtn" style="display:none;" onclick="copyTranslation()" class="action-btn copy-btn">
+            <i class="fas fa-copy"></i> Copy Text
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio Controls Section -->
+    <section class="audio-controls-section">
+      <div class="audio-controls-container">
+        <h3><i class="fas fa-music"></i> Audio Controls</h3>
+        <div class="audio-buttons">
+          <button onclick="rewind10()" class="audio-btn">
+            <i class="fas fa-backward"></i> -10s
+          </button>
+          <button onclick="pauseResumeSpeech()" class="audio-btn" id="pauseResumeBtn">
+            <i class="fas fa-pause"></i> Pause
+          </button>
+          <button onclick="stopSpeech()" class="audio-btn">
+            <i class="fas fa-stop"></i> Stop
+          </button>
+          <button onclick="forward10()" class="audio-btn">
+            <i class="fas fa-forward"></i> +10s
+          </button>
+        </div>
+        <div class="speed-control">
+          <label for="speedControl">Speed:</label>
+          <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
+          <span id="speedValue">1.0x</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
